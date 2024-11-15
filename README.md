@@ -1,6 +1,6 @@
 # Trabalho_Final
 
-##**__integrantes__**
+***integrantes***
 João Casote 
 Gustavo Santana
 Marcos Farinha
