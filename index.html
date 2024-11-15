@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Exames</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        section {
+            display: none; /* Esconde todas as seções por padrão */
+        }
+        section.active {
+            display: block; /* Mostra a seção ativa */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cadastro de Exames</h1>
+        <nav>
+            <button onclick="showSection('cadastro-empresa-conveniada')">Cadastro de Empresa Conveniada</button>
+            <button onclick="showSection('cadastro-empresa-solicitante')">Cadastro de Empresa Solicitante</button>
+            <button onclick="showSection('cadastro-paciente')">Cadastro de Paciente</button>
+            <button onclick="showSection('agendamento-exame')">Agendamento de Exame</button>
+        </nav>
+    </header>
+    <main>
+        <section id="cadastro-empresa-conveniada" class="active">
+            <h2>Cadastro de Empresa Conveniada</h2>
+            <form>
+                <input type="text" placeholder="Nome" required>
+                <input type="text" placeholder="CNPJ" required>
+                <input type="text" placeholder="Endereço" required>
+                <input type="text" placeholder="Contato" required>
+                <input type="text" placeholder="Serviços Oferecidos (separados por vírgula)" required>
+                <button type="submit">Cadastrar</button>
+            </form>
+        </section>
+
+        <section id="cadastro-empresa-solicitante">
+            <h2>Cadastro de Empresa Solicitante</h2>
+            <form>
+                <input type="text" placeholder="Nome" required>
+                <input type="text" placeholder="CNPJ" required>
+                <input type="text" placeholder="Contato" required>
+                <button type="submit">Cadastrar</button>
+            </form>
+        </section>
+
+        <section id="cadastro-paciente">
+            <h2>Cadastro de Paciente</h2>
+            <form>
+                <input type="text" placeholder="Nome" required>
+                <input type="text" placeholder="CPF" required>
+                <input type="date" placeholder="Data de Nascimento" required>
+                <input type="text" placeholder="Empresa Vinculada" required>
+                <textarea placeholder="Histórico Médico" required></textarea>
+                <button type="submit">Cadastrar</button>
+            </form>
+        </section>
+
+        <section id="agendamento-exame">
+            <h2>Agendamento de Exame</h2>
+            <form>
+                <input type="text" placeholder="ID da Empresa Solicitante" required>
+                <input type="text" placeholder="ID do Paciente" required>
+                <input type="text" placeholder="Tipo de Exame" required>
+                <input type="date" placeholder="Data do Exame" required>
+                <button type="submit">Agendar</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Sistema de Cadastro de Exames</p>
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            // Esconde todas as seções
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Mostra a seção selecionada
+            const activeSection = document.getElementById(sectionId);
+            activeSection.classList.add('active');
+        }
+    </script>
+</body>
+</html>
