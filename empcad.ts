@@ -1,148 +1,111 @@
-// Definição de classes para as principais entidades do sistema
-class EmpresaConveniada {
-    constructor(
-        public id: number,
-        public nome: string,
-        public cnpj: string,
-        public endereco: string,
-        public contato: string,
-        public servicosOferecidos: string[]
-    ) {}
+//tsc empcad.ts
+//npm install -g typescript
+interface EmpresaConveniada {
+    nome: string;
+    cnpj: string;
+    endereco: string;
+    contato: string;
+    servicos: string;
 }
 
-class EmpresaSolicitante {
-    constructor(
-        public id: number,
-        public nome: string,
-        public cnpj: string,
-        public contato: string
-    ) {}
+interface EmpresaSolicitante {
+    nome: string;
+    cnpj: string;
+    contato: string;
 }
 
-class Paciente {
-    constructor(
-        public id: number,
-        public nome: string,
-        public cpf: string,
-        public dataNascimento: Date,
-        public empresaVinculada: string,
-        public historicoMedico: string
-    ) {}
+interface Paciente {
+    nome: string;
+    cpf: string;
+    dataNascimento: string;
+    empresaVinculada: string;
+    historicoMedico: string;
 }
 
-class Agendamento {
-    constructor(
-        public id: number,
-        public empresaSolicitanteId: number,
-        public pacienteId: number,
-        public tipoExame: string,
-        public data: Date
-    ) {}
+interface Agendamento {
+    idSolicitante: string;
+    idPaciente: string;
+    tipoExame: string;
+    dataExame: string;
 }
 
-// Simulação de "banco de dados" local
-const empresasConveniadas: EmpresaConveniada[] = [];
-const empresasSolicitantes: EmpresaSolicitante[] = [];
+const empresasConveniada: EmpresaConveniada[] = [];
+const empresasSolicitante: EmpresaSolicitante[] = [];
 const pacientes: Paciente[] = [];
 const agendamentos: Agendamento[] = [];
 
-// Funções principais do sistema
-
-// 1. Cadastro de Empresas Conveniadas
-function cadastrarEmpresaConveniada(empresa: EmpresaConveniada): void {
-    empresasConveniadas.push(empresa);
-    console.log("Empresa conveniada cadastrada:", empresa);
-}
-
-// 2. Cadastro de Empresas Solicitantes de Exames
-function cadastrarEmpresaSolicitante(empresa: EmpresaSolicitante): void {
-    empresasSolicitantes.push(empresa);
-    console.log("Empresa solicitante cadastrada:", empresa);
-}
-
-// 3. Cadastro de Pacientes
-function cadastrarPaciente(paciente: Paciente): void {
-    pacientes.push(paciente);
-    console.log("Paciente cadastrado:", paciente);
-}
-
-// 4. Agendamento de Exames com validação de data
-function agendarExame(agendamento: Agendamento): void {
-    // Valida se já existe um agendamento para o paciente na mesma data
-    const conflito = agendamentos.some(a => a.pacienteId === agendamento.pacienteId && a.data.getTime() === agendamento.data.getTime());
-    
-    if (conflito) {
-        console.log("Erro: Já existe um agendamento para esse paciente na data selecionada.");
-    } else {
-        agendamentos.push(agendamento);
-        console.log("Agendamento realizado:", agendamento);
+function showSection(sectionId: string): void {
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        section.classList.remove('active');
+    });
+    const activeSection = document.getElementById(sectionId);
+    if (activeSection) {
+        activeSection.classList.add('active');
     }
 }
 
-// Funções de edição e exclusão de dados
+function cadastrarEmpresaConveniada(event: Event): boolean {
+    event.preventDefault();
+    const nome = (document.getElementById('nome-conveniada') as HTMLInputElement).value;
+    const cnpj = (document.getElementById('cnpj-conveniada') as HTMLInputElement).value;
+    const endereco = (document.getElementById('endereco-conveniada') as HTMLInputElement).value;
+    const contato = (document.getElementById('contato-conveniada') as HTMLInputElement).value;
+    const servicos = (document.getElementById('servicos-conveniada') as HTMLInputElement).value;
 
-// Editar Empresa Conveniada
-function editarEmpresaConveniada(id: number, dadosAtualizados: Partial<EmpresaConveniada>): void {
-    const empresa = empresasConveniadas.find(e => e.id === id);
-    if (empresa) {
-        Object.assign(empresa, dadosAtualizados);
-        console.log("Empresa conveniada editada:", empresa);
-    } else {
-        console.log("Empresa conveniada não encontrada.");
-    }
+    empresasConveniada.push({ nome, cnpj, endereco, contato, servicos });
+    mostrarInformacoes('info-conveniada', empresasConveniada);
+    return false; // Para evitar o envio do formulário
 }
 
-// Editar Empresa Solicitante
-function editarEmpresaSolicitante(id: number, dadosAtualizados: Partial<EmpresaSolicitante>): void {
-    const empresa = empresasSolicitantes.find(e => e.id === id);
-    if (empresa) {
-        Object.assign(empresa, dadosAtualizados);
-        console.log("Empresa solicitante editada:", empresa);
-    } else {
-        console.log("Empresa solicitante não encontrada.");
-    }
+function cadastrarEmpresaSolicitante(event: Event): boolean {
+    event.preventDefault();
+    const nome = (document.getElementById('nome-solicitante') as HTMLInputElement).value;
+    const cnpj = (document.getElementById('cnpj-solicitante') as HTMLInputElement).value;
+    const contato = (document.getElementById('contato-solicitante') as HTMLInputElement).value;
+
+    empresasSolicitante.push({ nome, cnpj, contato });
+    mostrarInformacoes('info-solicitante', empresasSolicitante);
+    return false; // Para evitar o envio do formulário
 }
 
-// Editar Paciente
-function editarPaciente(id: number, dadosAtualizados: Partial<Paciente>): void {
-    const paciente = pacientes.find(p => p.id === id);
-    if (paciente) {
-        Object.assign(paciente, dadosAtualizados);
-        console.log("Paciente editado:", paciente);
-    } else {
-        console.log("Paciente não encontrado.");
-    }
+function cadastrarPaciente(event: Event): boolean {
+    event.preventDefault();
+    const nome = (document.getElementById('nome-paciente') as HTMLInputElement).value;
+    const cpf = (document.getElementById('cpf-paciente') as HTMLInputElement).value;
+    const dataNascimento = (document.getElementById('data-nascimento-paciente') as HTMLInputElement).value;
+    const empresaVinculada = (document.getElementById('empresa-vinculada-paciente') as HTMLInputElement).value;
+    const historicoMedico = (document.getElementById('historico-medico-paciente') as HTMLTextAreaElement).value;
+
+    pacientes.push({ nome, cpf, dataNascimento, empresaVinculada, historicoMedico });
+    mostrarInformacoes('info-paciente', pacientes);
+    return false; // Para evitar o envio do formulário
 }
 
-// Excluir Empresa Conveniada
-function excluirEmpresaConveniada(id: number): void {
-    const index = empresasConveniadas.findIndex(e => e.id === id);
-    if (index !== -1) {
-        empresasConveniadas.splice(index, 1);
-        console.log("Empresa conveniada excluída com sucesso.");
-    } else {
-        console.log("Empresa conveniada não encontrada.");
-    }
+function agendarExame(event: Event): boolean {
+    event.preventDefault();
+    const idSolicitante = (document.getElementById('id-solicitante') as HTMLInputElement).value;
+    const idPaciente = (document.getElementById('id-paciente') as HTMLInputElement).value;
+    const tipoExame = (document.getElementById('tipo-exame') as HTMLInputElement).value;
+    const dataExame = (document.getElementById('data-exame') as HTMLInputElement).value;
+
+    agendamentos.push({ idSolicitante, idPaciente, tipoExame, dataExame });
+    mostrarInformacoes('info-agendamento', agendamentos);
+    return false; // Para evitar o envio do formulário
 }
 
-// Excluir Empresa Solicitante
-function excluirEmpresaSolicitante(id: number): void {
-    const index = empresasSolicitantes.findIndex(e => e.id === id);
-    if (index !== -1) {
-        empresasSolicitantes.splice(index, 1);
-        console.log("Empresa solicitante excluída com sucesso.");
-    } else {
-        console.log("Empresa solicitante não encontrada.");
-    }
-}
-
-// Excluir Paciente
-function excluirPaciente(id: number): void {
-    const index = pacientes.findIndex(p => p.id === id);
-    if (index !== -1) {
-        pacientes.splice(index, 1);
-        console.log("Paciente excluído com sucesso.");
-    } else {
-        console.log("Paciente não encontrado.");
+function mostrarInformacoes(elementId: string, lista: Array<any>): void {
+    const infoDiv = document.getElementById(elementId);
+    if (infoDiv) {
+        infoDiv.innerHTML = `<h3>Informações Cadastradas:</h3>`;
+        lista.forEach((item, index) => {
+            // Verifica se item é um objeto
+            if (typeof item === 'object' && item !== null) {
+                infoDiv.innerHTML += `<p><strong>Registro ${index + 1}:</strong><br>
+                ${Object.entries(item).map(([key, value]) => `${key}: ${value}`).join('<br>')}</p>`;
+            } else {
+                infoDiv.innerHTML += `<p><strong>Registro ${index + 1}:</strong><br>Dados inválidos</p>`;
+            }
+        });
     }
 }
